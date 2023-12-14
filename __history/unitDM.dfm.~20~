@@ -1,0 +1,36 @@
+object DataModule1: TDataModule1
+  OldCreateOrder = False
+  Height = 531
+  Width = 766
+  object FDConn: TFDConnection
+    Params.Strings = (
+      'Database=dbagenda'
+      'User_Name=root'
+      'Password=p@ssw0rd'
+      'DriverID=MySQL')
+    Connected = True
+    LoginPrompt = False
+    Left = 40
+    Top = 48
+  end
+  object QryAgenda: TFDQuery
+    Active = True
+    Connection = FDConn
+    SQL.Strings = (
+      'select * from agenda')
+    Left = 40
+    Top = 128
+  end
+  object dsAgenda: TDataSource
+    DataSet = QryAgenda
+    Left = 112
+    Top = 128
+  end
+  object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
+    VendorLib = 
+      'C:\Users\Adriano Santos\Documents\Projetos Delphi\Agenda B'#225'sica\' +
+      'libmySQL.dll'
+    Left = 664
+    Top = 32
+  end
+end

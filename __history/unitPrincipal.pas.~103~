@@ -1,0 +1,128 @@
+unit unitPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Mask;
+
+type
+  TfrmPrincipal = class(TForm)
+    Panel1: TPanel;
+    Label1: TLabel;
+    Panel2: TPanel;
+    PageControl1: TPageControl;
+    Cadastro: TTabSheet;
+    Pesquisa: TTabSheet;
+    Label2: TLabel;
+    edtId: TEdit;
+    Label3: TLabel;
+    edtNome: TEdit;
+    Label4: TLabel;
+    Label5: TLabel;
+    edtUf: TEdit;
+    Label6: TLabel;
+    edtCidade: TEdit;
+    Label7: TLabel;
+    edtBairro: TEdit;
+    Label8: TLabel;
+    Panel3: TPanel;
+    btnNovo: TButton;
+    btnSalvar: TButton;
+    btnEditar: TButton;
+    btnCancelar: TButton;
+    maskTelefone: TMaskEdit;
+    maskCep: TMaskEdit;
+    procedure btnNovoClick(Sender: TObject);
+    procedure HabilitarCampos;
+    procedure DesabilitarCampos;
+    procedure CancelarEdicao;
+    procedure btnSalvarClick(Sender: TObject);
+    procedure LimparCampos;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+uses unitDM;
+
+procedure TfrmPrincipal.btnNovoClick(Sender: TObject);
+begin
+  MessageDlg('Deseja criar um novo registro?', mtConfirmation, [mbOK, mbNo], 0);
+  HabilitarCampos;
+  DesabilitarCampos;
+end;
+
+procedure TfrmPrincipal.btnSalvarClick(Sender: TObject);
+begin
+ with DM.QryAgenda do
+    begin
+      close;
+      SQL.Clear;
+      SQL.Add('insert into agenda (nome, telefone, Uf, cidade, bairro, cep) values ');
+      SQL.Add('(:pnome, :ptelefone, :pUf, :pcidade, :pbairro, :pcep)');
+      ParamByName('pnome').AsString := edtNome.Text;
+      ParamByName('ptelefone').AsString := maskTelefone.Text;
+      ParamByName('pUf').AsString := edtUf.Text;
+      ParamByName('pcidade').AsString := edtCidade.Text;
+      ParamByName('pbairro').AsString := edtBairro.Text;
+      ParamByName('pcep').AsString := maskCep.Text;
+      ExecSQL;
+      LimparCampos;
+      DesabilitarCampos;
+    end;
+
+end;
+
+procedure TfrmPrincipal.CancelarEdicao;
+begin
+  edtNome.Text  := '';
+  maskTelefone.Text := '';
+  edtUf.Text := '';
+  edtCidade.Text := '';
+  edtBairro.Text := '';
+  maskCep.Text := '';
+end;
+
+procedure TfrmPrincipal.HabilitarCampos;
+begin
+   edtId.Enabled := true;
+  edtNome.Enabled := true;
+  maskTelefone.Enabled := true;
+  edtUf.Enabled := true;
+  edtCidade.Enabled := true;
+  edtBairro.Enabled := true;
+  maskCep.Enabled := true;
+end;
+
+procedure TfrmPrincipal.DesabilitarCampos;
+begin
+  edtId.Enabled := false;
+  edtNome.Enabled := false;
+  maskTelefone.Enabled := false;
+  edtUf.Enabled := false;
+  edtCidade.Enabled := false;
+  edtBairro.Enabled := false;
+  maskCep.Enabled := false;
+end;
+
+procedure TfrmPrincipal.LimparCampos;
+begin
+  edtNome.Text  := '';
+  maskTelefone.Text := '';
+  edtUf.Text := '';
+  edtCidade.Text := '';
+  edtBairro.Text := '';
+  maskCep.Text := '';
+end;
+
+end.
